@@ -1,3 +1,12 @@
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.views import View
+from expense.forms import RegisterForm
+#
 
-# Create your views here.
+# Class Based View
+class RegisterView(View):
+    def get(self,request,*args, **kwargs):
+        form = RegisterForm()
+        return render (request, 'expense/register.html',{'form':form})
+    
