@@ -8,7 +8,6 @@ from expense.forms import RegisterForm
 class RegisterView(View):
     def get(self,request,*args, **kwargs):
         form = RegisterForm()
-<<<<<<< HEAD
         return render (request, 'expense/register.html',
         {'form':form})
     def post(self,request,*args, ** kwargs):
@@ -18,7 +17,5 @@ class RegisterView(View):
            login(request, user)
            redirect('')
        
-=======
         return render (request, 'expense/register.html',{'form':form})
     
->>>>>>> fb5bba0faa2e6f34a43f4667440334518ff4c1a1
