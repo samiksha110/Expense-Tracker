@@ -1,11 +1,10 @@
-from django.urls import path, include
-from . import views
-
+from django.urls import path
+from expense.views import RegisterView, DashboardView, TransactionCreateView, TransactionListView, GoalCreateView, export_transactions
 urlpatterns = [
-    path('login/', views.login_user, name='login'),
-    # Add this line:
-    path('register/', views.RegisterView.as_view(), name='register'),
-# 2. Add this line to include all built-in auth views
-    path('', include('django.contrib.auth.urls')),
-    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+  path('register/', RegisterView.as_view(), name="register"),    
+  path('', DashboardView.as_view(), name="dashboard"),
+  path('transaction/add/', TransactionCreateView.as_view(), name='transaction_add'),
+  path('transactions/', TransactionListView.as_view(), name='transaction_list'), 
+  path('goal/add/', GoalCreateView.as_view(), name='goal_add'),
+  path('generate-report/', export_transactions, name='export_transactions'),
 ]
