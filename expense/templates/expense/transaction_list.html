@@ -1,34 +1,74 @@
 {% extends "expense/base.html" %}
-{% block title %}Transaction{% endblock title %}
+{% block title %}Transactions{% endblock title %}
 {% block content %}
-<a href="{% url 'export_transactions' %}" class="ml-4 my-4 inline-block px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
-    Generate Report
-</a>
-<h1 class="text-xl font-bold my-4">Transaction List</h1>
-<table class="min-w-full table-auto border-collapse border border-gray-300">
-  <thead>
-      <tr class="bg-gray-100">
-          <th class="px-4 py-2 border border-gray-300">Date</th>
-          <th class="px-4 py-2 border border-gray-300">Title</th>
-          <th class="px-4 py-2 border border-gray-300">Amount</th>
-          <th class="px-4 py-2 border border-gray-300">Type</th>
-      </tr>
-  </thead>
-  <tbody>
-      {% for transaction in transactions %}
-      <tr class="hover:bg-gray-50">
-          <td class="px-4 py-2 border border-gray-300">{{ transaction.date }}</td>
-          <td class="px-4 py-2 border border-gray-300">{{ transaction.title }}</td>
-          <td class="px-4 py-2 border border-gray-300">${{ transaction.amount|floatformat:2 }}</td>
-          <td class="px-4 py-2 border border-gray-300">
-              {% if transaction.transaction_type == 'Income' %}
-                  Credit
-              {% else %}
-                  Debit
-              {% endif %}
-          </td>
-      </tr>
-      {% endfor %}
-  </tbody>
-</table>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-extrabold text-gray-900">Your Transactions</h1>
+      <p class="mt-2 text-lg text-gray-600">View and manage your financial records</p>
+    </div>
+
+    <!-- Add Transaction Button -->
+    <div class="mb-6 text-center">
+      <a href="{% url 'transaction_create' %}" class="inline-block px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:from-indigo-700 hover:to-purple-700 transition duration-300 transform hover:scale-105">
+        + Add New Transaction
+      </a>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="bg-white shadow-2xl rounded-lg overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gradient-to-r from-indigo-500 to-purple-600">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">Title</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">Amount</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">Type</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">Category</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">Date</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {% for transaction in transactions %}
+            <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ transaction.title }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {% if transaction.transaction_type == 'Income' %}
+                  <span class="text-green-600 font-semibold">+₹{{ transaction.amount|floatformat:2 }}</span>
+                {% else %}
+                  <span class="text-red-600 font-semibold">-₹{{ transaction.amount|floatformat:2 }}</span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {% if transaction.transaction_type == 'Income' %}
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Income</span>
+                {% else %}
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Expense</span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ transaction.category }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ transaction.date|date:"M d, Y" }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <p class="text-lg">No transactions found.</p>
+                <p class="text-sm">Start by adding your first transaction!</p>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Back to Dashboard -->
+    <div class="mt-8 text-center">
+      <a href="{% url 'dashboard' %}" class="text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out font-medium">
+        Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
 {% endblock content %}

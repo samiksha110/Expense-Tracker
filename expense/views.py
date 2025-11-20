@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.views import View
 from expense.forms import RegisterForm, TransactionForm, GoalForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction, Goal
 from django.db.models import Sum
-from .admin import TransactionResource
 from django.contrib import messages
 
 # --- Register View ---
@@ -105,19 +104,3 @@ class GoalCreateView(LoginRequiredMixin, View):
             return redirect('dashboard')
         # Corrected template path
         return render(request, 'expense/goal_form.html', {'form':form})
-    
-# --- Export Function ---
-def export_transactions(request):
-    user_transactions = Transaction.objects.filter(user = request.user)
-
-    transactions_resource = TransactionResource()
-    dataset = transactions_resource.export(queryset=user_transactions)
-
-    excel_data = dataset.export('xlsx')
-
-    # Create an HttpResponse with the correct MIME type for an Excel file
-    response = HttpResponse(excel_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-
-    # Set the header for downloading the file
-    response['Content-Disposition'] = 'attachment; filename=transactions_report.xlsx'
-    return response

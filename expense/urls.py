@@ -1,12 +1,11 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView  # Import built-in views
 from expense.views import (
-    RegisterView, 
-    DashboardView, 
-    TransactionCreateView, 
-    TransactionListView, 
-    GoalCreateView, 
-    export_transactions
+    RegisterView,
+    DashboardView,
+    TransactionCreateView,
+    TransactionListView,
+    GoalCreateView
 )
 
 urlpatterns = [
@@ -27,5 +26,4 @@ urlpatterns = [
     path('goals/add/', GoalCreateView.as_view(), name='goal_create'), # Changed path from goal/add/ and name from goal_add
     
     # 5. Utility Path
-    path('report/generate/', export_transactions, name='export_transactions'), # Changed path for clarity
 ]
