@@ -21,14 +21,14 @@
         <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500">
             <p class="text-sm text-gray-500 uppercase">Total Income</p>
             <p class="text-3xl font-extrabold text-green-700 mt-1">
-                ${{ total_income|floatformat:2 }}
+                ₹{{ total_income|floatformat:2 }}
             </p>
         </div>
 
         <div class="bg-white p-6 rounded-xl shadow border-l-4 border-red-500">
             <p class="text-sm text-gray-500 uppercase">Total Expense</p>
             <p class="text-3xl font-extrabold text-red-700 mt-1">
-                ${{ total_expense|floatformat:2 }}
+                ₹{{ total_expense|floatformat:2 }}
             </p>
         </div>
 
@@ -36,7 +36,7 @@
             <p class="text-sm text-gray-500 uppercase">Net Savings</p>
             <p class="text-3xl font-extrabold mt-1 
                 {% if net_savings >= 0 %}text-indigo-700{% else %}text-red-700{% endif %}">
-                ${{ net_savings|floatformat:2 }}
+                ₹{{ net_savings|floatformat:2 }}
             </p>
         </div>
 
